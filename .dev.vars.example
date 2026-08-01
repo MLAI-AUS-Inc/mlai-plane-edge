@@ -1,0 +1,11 @@
+# Local-only example. Copy to .dev.vars and replace the non-secret placeholder.
+# Never point this at admin.mlai.au: that would recurse through the gateway.
+ROUTING_MODE="plane"
+PLANE_ORIGIN_URL="https://plane-origin.example.invalid"
+PLANE_SOURCE_URL="https://github.com/MLAI-AUS-Inc/mlai-plane/tree/REPLACE_WITH_40_CHARACTER_COMMIT"
+ADDITIONAL_DENIED_COOKIES="CF_Authorization"
+
+# Optional Cloudflare Access service-token credentials for a protected Tunnel
+# origin. Store production values with `wrangler secret put`; never commit them.
+PLANE_ACCESS_CLIENT_ID=""
+PLANE_ACCESS_CLIENT_SECRET=""

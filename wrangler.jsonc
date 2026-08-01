@@ -1,0 +1,58 @@
+{
+  "$schema": "./node_modules/wrangler/config-schema.json",
+  "name": "mlai-plane-edge",
+  "main": "./src/index.ts",
+  "compatibility_date": "2026-07-31",
+  "workers_dev": true,
+  "preview_urls": true,
+  "send_metrics": false,
+  "observability": {
+    "enabled": false,
+    "logs": {
+      "enabled": false,
+      "invocation_logs": false
+    }
+  },
+  "vars": {
+    "ROUTING_MODE": "plane",
+    "PLANE_ORIGIN_URL": "https://replace-me.invalid",
+    "PLANE_SOURCE_URL": "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/616a129947936fb900a1a4a383dbc5f0e64e9944",
+    "ADDITIONAL_DENIED_COOKIES": "CF_Authorization"
+  },
+  "env": {
+    "staging": {
+      "name": "mlai-plane-edge-staging",
+      "workers_dev": true,
+      "preview_urls": true,
+      "vars": {
+        "ROUTING_MODE": "plane",
+        "PLANE_ORIGIN_URL": "https://replace-me.invalid",
+        "PLANE_SOURCE_URL": "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/616a129947936fb900a1a4a383dbc5f0e64e9944",
+        "ADDITIONAL_DENIED_COOKIES": "CF_Authorization"
+      }
+    },
+    "production": {
+      "name": "mlai-plane-edge-production",
+      "workers_dev": false,
+      "preview_urls": false,
+      "vars": {
+        "ROUTING_MODE": "legacy",
+        "PLANE_ORIGIN_URL": "https://replace-me.invalid",
+        "PLANE_SOURCE_URL": "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/616a129947936fb900a1a4a383dbc5f0e64e9944",
+        "ADDITIONAL_DENIED_COOKIES": "CF_Authorization"
+      },
+      "services": [
+        {
+          "binding": "LEGACY_ADMIN",
+          "service": "mlai-admin"
+        }
+      ],
+      "routes": [
+        {
+          "pattern": "admin.mlai.au/*",
+          "zone_name": "mlai.au"
+        }
+      ]
+    }
+  }
+}
