@@ -7,6 +7,10 @@ parent-domain authentication cookies from crossing that trust boundary.
 This is a standalone project. It is not part of the `mlai-au` React Router
 Worker and it does not contain or fork Plane.
 
+For the cross-repository platform map, start with
+[`mlai-engineering`](https://github.com/MLAI-AUS-Inc/mlai-engineering). AI
+coding agents must also read [`AGENTS.md`](AGENTS.md).
+
 ## Security invariants
 
 In `plane` mode, the gateway:
