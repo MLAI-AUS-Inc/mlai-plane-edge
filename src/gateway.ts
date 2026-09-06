@@ -62,6 +62,11 @@ function responseHeaders(
   headers.delete("Set-Cookie");
 
   for (const value of setCookieValues) {
+    // The origin's Access session belongs to the gateway, not the browser.
+    // Forwarding it overwrites the public hostname's Access login cookie.
+    if (value.slice(0, value.indexOf("=")).trim() === "CF_Authorization") {
+      continue;
+    }
     const sanitized = sanitizeSetCookie(value);
     if (sanitized) {
       headers.append("Set-Cookie", sanitized);
