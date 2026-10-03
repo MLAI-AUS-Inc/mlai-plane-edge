@@ -1,5 +1,31 @@
 import { describe, expect, it } from "vitest";
 import { handleRequest, rebuildOriginResponse } from "../src/gateway";
+
+describe("origin Access response cookie isolation", () => {
+  it.each([200, 302, 401])("drops origin Access cookies on status %s without losing Plane cookies", (status) => {
+    const headers = new Headers();
+    headers.append("Set-Cookie", "CF_Authorization=origin-session; Path=/; HttpOnly; Secure");
+    headers.append("Set-Cookie", "session-id=plane-session; Domain=.mlai.au; Path=/; HttpOnly");
+    headers.append("Set-Cookie", "CF_Authorization=; Max-Age=0; Path=/");
+    headers.append("Set-Cookie", "csrftoken=csrf; Path=/; Secure");
+    headers.append("Set-Cookie", "CF_Authorization_extra=keep; Path=/");
+    const response = rebuildOriginResponse(new Response("body", { status, headers }), "plane");
+    expect(response.headers.getSetCookie()).toEqual([
+      "session-id=plane-session; Path=/; HttpOnly",
+      "csrftoken=csrf; Path=/; Secure",
+      "CF_Authorization_extra=keep; Path=/",
+    ]);
+    expect(response.status).toBe(status);
+  });
+
+  it("leaves legacy Access cookies unchanged", () => {
+    const cookie = "CF_Authorization=legacy-session; Path=/; HttpOnly";
+    const response = rebuildOriginResponse(new Response("legacy", {
+      headers: { "Set-Cookie": cookie },
+    }), "legacy");
+    expect(response.headers.getSetCookie()).toEqual([cookie]);
+  });
+});
 import type { Env, Runtime } from "../src/types";
 
 const PLANE_ENV: Env = {

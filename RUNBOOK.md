@@ -41,6 +41,18 @@ Do not attach the production route until every item below is true.
 
 ## 2. Prepare and verify staging
 
+The staging custom domain is `plane-staging.mlai.au`. Its Cloudflare Access
+application uses an explicitly approved email allowlist and email one-time-code
+login. Manage membership in that staging application only, never by copying a
+different application's allowlist. The private origin Access application accepts
+only the dedicated staging gateway service token. Both Worker secrets must be
+installed before deploying the configured origin.
+
+Staging disables `workers.dev` and preview URLs to prevent bypassing the custom
+domain's Access policy. An unauthenticated staging request must redirect to
+Access; the private origin must return 403, and the old workers.dev URL must not
+serve Plane. Production configuration and `admin.mlai.au` remain unchanged.
+
 1. Install and check the exact locked dependencies:
 
    ```sh
