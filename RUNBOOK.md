@@ -248,3 +248,17 @@ custom domain.
   `Domain=.mlai.au` credential.
 - Keep the legacy Worker deployable until the agreed rollback window ends; then
   replace the binding rollback with a separately approved recovery strategy.
+
+## Canonical staging hostname
+
+The current staging application uses `plane.mlai.au`; `plane-staging.mlai.au`
+redirects there and remains a configured rollback hostname. Keep both custom
+domains in the staging Wrangler configuration. Wrangler replaces a worker's
+custom-domain set when deploying, so omitting either hostname removes its
+binding and managed DNS record.
+
+Pin staging `PLANE_SOURCE_URL` to the exact application source that completed
+the protected Plane deployment workflow, rather than the latest un-deployed
+main commit. The 3 October reconciliation uses `6c0764ac8b18c995b2dfdf945b2dc699f79f887c`,
+verified from deployment run `36917557773`. Advance it after a newer deployment
+has completed and its public route has passed verification.

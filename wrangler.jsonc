@@ -25,12 +25,13 @@
       "workers_dev": false,
       "preview_urls": false,
       "routes": [
+        { "pattern": "plane.mlai.au", "custom_domain": true },
         { "pattern": "plane-staging.mlai.au", "custom_domain": true }
       ],
       "vars": {
         "ROUTING_MODE": "plane",
         "PLANE_ORIGIN_URL": "https://plane-origin-staging.mlai.au",
-        "PLANE_SOURCE_URL": "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/4b823cdb94b1aea537522aee928cc5e587cba3fa",
+        "PLANE_SOURCE_URL": "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/6c0764ac8b18c995b2dfdf945b2dc699f79f887c",
         "ADDITIONAL_DENIED_COOKIES": "CF_Authorization"
       }
     },
