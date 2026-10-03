@@ -258,6 +258,18 @@ describe("Plane origin mode", () => {
       `<${PLANE_ENV.PLANE_SOURCE_URL}>; rel="source"`,
     );
   });
+
+  it("accepts the deployed MLAI fork commit URL without URL normalization", async () => {
+    const deployedSource = "https://github.com/MLAI-AUS-Inc/mlai-plane/tree/616a129947936fb900a1a4a383dbc5f0e64e9944";
+    const response = await handleRequest(
+      new Request("https://admin.mlai.au/.well-known/mlai-source"),
+      { ...PLANE_ENV, PLANE_SOURCE_URL: deployedSource },
+    );
+
+    expect(response.status).toBe(200);
+    const payload = await response.json() as { source?: string };
+    expect(payload.source).toBe(deployedSource);
+  });
 });
 
 describe("legacy rollback mode", () => {

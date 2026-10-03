@@ -10,7 +10,7 @@ const NO_BODY_STATUSES = new Set([101, 204, 205, 304]);
 const ACCESS_CLIENT_ID_HEADER = "CF-Access-Client-Id";
 const ACCESS_CLIENT_SECRET_HEADER = "CF-Access-Client-Secret";
 const SOURCE_PATH = "/.well-known/mlai-source";
-const SOURCE_PATH_PATTERN = /^\/MLAI-AUS-Inc\/mlai-plane\/tree\/[0-9a-f]{40}$/u;
+const SOURCE_URL_PATTERN = /^https:\/\/github\.com\/MLAI-AUS-Inc\/mlai-plane\/tree\/[0-9a-f]{40}$/u;
 
 const SECURITY_HEADERS = Object.freeze({
   "Referrer-Policy": "same-origin",
@@ -99,24 +99,8 @@ function resolvePlaneSourceUrl(configuredSource?: string): string | undefined {
     return undefined;
   }
 
-  let source: URL;
-  try {
-    source = new URL(configuredSource.trim());
-  } catch {
-    return undefined;
-  }
-
-  const valid =
-    source.protocol === "https:" &&
-    source.hostname === "github.com" &&
-    !source.username &&
-    !source.password &&
-    !source.search &&
-    !source.hash &&
-    source.port === "" &&
-    SOURCE_PATH_PATTERN.test(source.pathname);
-
-  return valid ? source.href.replace(/\/$/u, "") : undefined;
+  const source = configuredSource.trim();
+  return SOURCE_URL_PATTERN.test(source) ? source : undefined;
 }
 
 function sourceDisclosure(sourceUrl: string): Response {
